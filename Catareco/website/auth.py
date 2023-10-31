@@ -11,10 +11,10 @@ class Auth():
     @auth.route('/login', methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
-            email = request.form.get('email')
+            cpf = request.form.get('cpf')
             password = request.form.get('password')
 
-            user = User.query.filter_by(email=email).first()
+            user = User.query.filter_by(cpf=cpf).first()
             if user:
                 if check_password_hash(user.password, password):
                     flash('Login realizado com sucesso!', category='success')
@@ -23,7 +23,7 @@ class Auth():
                 else:
                     flash('Senha incorreta, tente novamente', category='error')
             else:
-                flash('Email não cadastrado', category='error')
+                flash('CPF não cadastrado', category='error')
 
         return render_template("login.html", user=current_user)
 
@@ -38,16 +38,16 @@ class Auth():
     @auth.route('/sign-up', methods=['GET', 'POST'])
     def sign_up():
         if request.method == 'POST':
-            email = request.form.get('email')
+            cpf = request.form.get('cpf')
             first_name = request.form.get('firstName')
             password1 = request.form.get('password1')
             password2 = request.form.get('password2')
             
-            user = User.query.filter_by(email=email).first()
+            user = User.query.filter_by(cpf=cpf).first()
             if user:
-                flash('Email já cadastrado', category='error')
-            elif len(email) < 7:
-                flash('Email precisa ter mais do que 6 caracteres', category='error')
+                flash('CPF já cadastrado', category='error')
+            elif len(cpf) < 11:
+                flash('CPF inválido', category='error')
             elif len(first_name) < 2:
                 flash('Primeiro nome deve ter mais do que 3 caracteres.', category='error')
             elif password1 != password2:
@@ -55,7 +55,7 @@ class Auth():
             elif len(password1) < 7:
                 flash('Senha deve ter no mínimo 7 caracteres.', category='error')
             else:
-                new_user = User(email=email, first_name=first_name, password=generate_password_hash(
+                new_user = User(cpf=cpf, first_name=first_name, password=generate_password_hash(
                     password1, method='sha256'))
                 db.session.add(new_user)
                 db.session.commit()

@@ -22,7 +22,7 @@ def create_app():
     app.register_blueprint(Views.views, url_prefix='/')
     app.register_blueprint(Auth.auth, url_prefix='/')
 
-    from .models import User, Inventario, Vinhos, Vinicola
+    from .models import User
     
     with app.app_context():
         db.create_all()    
