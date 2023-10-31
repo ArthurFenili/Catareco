@@ -1,23 +1,42 @@
 {% extends "base.html" %} {% block title %}Catareco{% endblock %} {% block content
   %}
-<h1 align="center" style="padding-top: 30px; padding-bottom: 30px;">Meu Perfil</h1>
-
-<div class="wrapper">
-  <div class="left">
-      <h4>Nome</h4>
-       <p></p>
-
-  </div>
-  <div class="right">
-      <div class="info">
-        <div class="info_data">
-              <div class="data">
-                <h4>CPF</h4>
-                <p></p>
-              </div>
+<div style="padding-top: 40px; padding-bottom: 30px; padding-left: 350px; padding-right: 350px;">
+  <div class="card">
+    <div class="card-header">
+      <h1 align="center">Minha Conta</h1>
+    </div>
+    <div class="card-body">
+      <div class="text-center">
+        <div class="info">
+          <div class="info_data">
+            <div class="data">
+              <h4>Nome: {{ user.first_name }}</h4>
+              <p></p>
+            </div>
+            <div class="data">
+              <h4>CPF: <span id="cpf"></span></h4>
+              <p></p>
+            </div>
+            <div class="data">
+              <h4>Saldo: R${{ user.balance }}</h4>
+              <p></p>
+          </div>
+          </div>
         </div>
-      </div>
+    </div>
+    </div>
   </div>
 </div>
+
+<script>
+  // Suponha que user.cpf seja um número inteiro
+  var cpf = {{ user.cpf }};
+  
+  // Converte o número inteiro para uma string e formata no formato XXX.XXX.XXX-XX
+  var cpfFormatado = String(cpf).replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+
+  // Exibe o CPF formatado na div
+  document.getElementById("cpf").textContent = cpfFormatado;
+</script>
 
 {% endblock %}

@@ -56,7 +56,7 @@ class Auth():
                 flash('Senha deve ter no mínimo 7 caracteres.', category='error')
             else:
                 new_user = User(cpf=cpf, first_name=first_name, password=generate_password_hash(
-                    password1, method='sha256'))
+                    password1, method='sha256'), balance=0.00, all_time_PET = 0.00, all_time_ALUMINUM = 0.00)
                 db.session.add(new_user)
                 db.session.commit()
                 login_user(new_user, remember=True)

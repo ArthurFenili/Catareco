@@ -20,10 +20,10 @@ class Views:
     def iniciar():
         return render_template("separacao.html", user=current_user)
 
-    @views.route('/precos', methods=['GET', 'POST'])
+    @views.route('/cotacao', methods=['GET', 'POST'])
     @login_required
-    def precos():
-        return render_template("precos.html", user=current_user)
+    def cotacao():
+        return render_template("cotacao.html", user=current_user)
 
     @views.route('/separando', methods=['GET', 'POST'])
     @login_required
