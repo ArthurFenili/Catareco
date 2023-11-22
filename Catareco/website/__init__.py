@@ -4,6 +4,8 @@ from os import path
 from flask_login import LoginManager
 from .config import Config
 import csv
+import serial
+import time
 
 
 db = SQLAlchemy()
@@ -12,8 +14,7 @@ DB_NAME = Config.DB_NAME
 
 def create_app():
     app = Flask(__name__)
-    
-    app.config.from_object(config.Config())
+    app.config.from_object(Config())
     db.init_app(app)
 
     from .views import Views
@@ -23,9 +24,9 @@ def create_app():
     app.register_blueprint(Auth.auth, url_prefix='/')
 
     from .models import User
-    
+
     with app.app_context():
-        db.create_all()    
+        db.create_all()
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -36,5 +37,6 @@ def create_app():
         return User.query.get(int(id))
 
     return app
+
 
 
