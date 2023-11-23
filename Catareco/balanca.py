@@ -34,7 +34,7 @@ def ler_valor_arduino(porta_serial):
     print(valor_pesos)
     media_peso = mean(valor_pesos)
     print(media_peso)
-    
+    return media_peso
 
 
 

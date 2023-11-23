@@ -1,0 +1,36 @@
+{% extends "base.html" %} {% block title %}Catareco{% endblock %} {% block content
+    %}
+  <div style="padding-top: 40px; padding-bottom: 30px; padding-left: 250px; padding-right: 250px;">
+    <div class="card">
+      <div class="card-header">
+        <h1 align="center">Resultado da separação</h1>
+      </div>
+      <div class="card-body">
+        <div class="text-center">
+          <div class="info">
+            <div class="info_data">
+              <div class="data">
+                <h4>Peso estimado:</h4>
+                <p></p>
+              </div>
+              <div class="data">
+                <h4>Peso: {{weight }}</h4>
+                <p></p>
+            </div>
+            <div class="data">
+                <h4>Créditos ganhos: </h4>
+                <p></p>
+            </div>
+            <div class="data">
+                <h4>Novo Saldo: R${{ user.balance }}</h4>
+                <p></p>
+            </div>
+            </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  {% endblock %}

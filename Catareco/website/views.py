@@ -14,17 +14,7 @@ from .espe import Esp
 class Views:
     views = Blueprint('views', __name__)
 
-    my_esp = None  # Initialize my_esp to None
-
-    @classmethod
-    def get_esp_instance(cls):
-        if cls.my_esp is None:
-            cls.my_esp = Esp().e
-        return cls.my_esp
-    #porta_serial = serial.Serial('COM4', 9600, timeout=1)
-    #time.sleep(2)
-
-
+    peso = 0
 
     @views.route('/', methods=['GET', 'POST'])
     @login_required
@@ -46,11 +36,11 @@ class Views:
     def separando():
         # Chama a função para ler os valores do Arduino
         porta_serial = serial.Serial('COM4', 9600, timeout=1)
-       # my_esp_instance = Views.get_esp_instance()
-        time.sleep(2)
-        ler_valor_arduino(porta_serial)
-        print("TEMPO")
-        time.sleep(5)
-        print("TEMPO")
-        ler_valor_arduino(porta_serial)
+        peso = ler_valor_arduino(porta_serial)
         return render_template("loading.html", user=current_user)
+
+    @views.route('/separado', methods=['GET', 'POST'])
+    @login_required
+    def separado():
+        return render_template("separeted.html", user=current_user, weight = Views.peso)
+

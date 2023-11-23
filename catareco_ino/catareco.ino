@@ -18,12 +18,9 @@ void setup() {
 
   servomotor.attach(23);  // Pinagem do servo (pino GPIO)
   
-  //Serial.print("Statig up load cell ... ");
   loadCell.begin();
   loadCell.start(4000);
-  //Serial.println("done.");
   loadCell.setCalFactor(2000);
-  int i = 0;
 }
 
 void loop() {
@@ -34,20 +31,18 @@ void loop() {
   if (command == '2') {
     loop_servo();
   }
+  if(command == '3') {
+    loop_passo();
+  }
+
+
+
 }
 
 // the loop function runs over and over again until power down or reset
 void loop_balanca() {
   static float load = 0.0;
   static unsigned long waitTime = millis();
-
-    //char command = Serial.read();
-    //Serial.print("Received command: ");
-    //Serial.println(command);
-    //if (command == 'S') {
-     // cell_setup();
-   // }
-  
 
   if (loadCell.update()) load = loadCell.getData();
 
@@ -60,12 +55,6 @@ void loop_balanca() {
   
 }
 
-void cell_setup(){
-  loadCell.begin();
-  loadCell.start(4000);
-  //Serial.println("EXCECUTED.");
-  loadCell.setCalFactor(2000);
-}
 
 char read_serial(){
   char command;
@@ -80,18 +69,13 @@ char read_serial(){
  
 void loop_servo() {
   Serial.print("SERVO");
-  char firstCommand = '\0';  // Inicializa com um caractere nulo
-  bool programa_concluido = false;  // Variável de controle
   char command = read_serial();
 
   // Aguarda a primeira entrada no serial
 
-  while(command != 'p' || command != 'l') {
+  while(command != 'p' && command != 'l') {
     command = read_serial();
   }
-
-  // Lê a primeira entrada no serial
-  firstCommand = Serial.read();
 
   // Executa continuamente enquanto houver entradas no serial e o programa não estiver concluído
     
@@ -102,17 +86,13 @@ void loop_servo() {
         rotateServoPet();
         Serial.println("saiu");
       }
-     
+    
+}  
 
-      // Exemplo: Verifica se o programa associado à entrada serial foi concluíd
-      programa_concluido = true;
-      
-      
-      
-    }
+void loop_passo(){
 
-    // Aqui você pode adicionar outros processamentos ou atrasos, se necessário
-  
+}
+
 
 
 
