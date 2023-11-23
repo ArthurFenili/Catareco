@@ -3,6 +3,12 @@ import time
 from statistics import mean
 
 def ler_valor_arduino(porta_serial):
+
+    porta_serial.write(b"2")
+    time.sleep(2)
+    porta_serial.write(b'p')
+    time.sleep(2)
+    print("ALOP")
     valor_pesos = []
 
     try:
@@ -10,6 +16,7 @@ def ler_valor_arduino(porta_serial):
             print("Aguardando leitura...")
             
             # Read data from the serial port
+            porta_serial.write(b"1")
             valor_arduino = porta_serial.read(porta_serial.in_waiting).strip()
             
             # Convert the data to integers and filter out non-numeric values
@@ -28,6 +35,7 @@ def ler_valor_arduino(porta_serial):
     media_peso = mean(valor_pesos)
     print(media_peso)
     
+
 
 
 # Abre a porta serial - ajuste a porta conforme necessário
@@ -56,4 +64,4 @@ def valor_arduino(esp_instance):
         else:
             print("No data received from Arduino")
 
-        
+        #colocar comentarios no codigo arduino do catareco pra ver pq o motor nao mexe
