@@ -35,12 +35,21 @@ class Views:
     @login_required
     def separando():
         # Chama a função para ler os valores do Arduino
-        porta_serial = serial.Serial('COM4', 9600, timeout=1)
-        peso = ler_valor_arduino(porta_serial)
+        #porta_serial = serial.Serial('COM4', 9600, timeout=1)
+        #peso = ler_valor_arduino(porta_serial)
         return render_template("loading.html", user=current_user)
 
     @views.route('/separado', methods=['GET', 'POST'])
     @login_required
     def separado():
+        return render_template("separeted.html", user=current_user, weight = Views.peso)
+
+    @views.route('/processando', methods=['GET', 'POST'])
+    @login_required
+    def processando():
+        # Chama a função para ler os valores do Arduino
+        #porta_serial = serial.Serial('COM4', 9600, timeout=1)
+        #peso = ler_valor_arduino(porta_serial)
+        time.sleep(10)
         return render_template("separeted.html", user=current_user, weight = Views.peso)
 

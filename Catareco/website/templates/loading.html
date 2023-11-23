@@ -3,21 +3,26 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Separando...</h5>
-        </div>
-        <div class="modal-body">
-            <img width="465" src="{{url_for('static', filename='loading.gif')}}"/>
-        </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Separando...</h5>
+            </div>
+            <div class="modal-body">
+                <img width="465" src="{{url_for('static', filename='loading.gif')}}"/>
+            </div>
         </div>
     </div>
-    </div>
+</div>
 {% endblock %}
 
 {% block javascript %}
 <script>
     $(document).ready(function(){
-        $("#exampleModal").modal("show")
-    })
+        $("#exampleModal").modal("show");
+
+        // Add a delay (in milliseconds) before navigating to views.separando
+        setTimeout(function(){
+            window.location.href = "/processando";
+        }, 1); // Adjust the delay as needed
+    });
 </script>
 {% endblock %}
