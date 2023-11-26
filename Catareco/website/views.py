@@ -48,8 +48,8 @@ class Views:
     @login_required
     def processando():
         # Chama a função para ler os valores do Arduino
-        #porta_serial = serial.Serial('COM4', 9600, timeout=1)
-        #peso = ler_valor_arduino(porta_serial)
+        with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
+            peso = ler_valor_arduino(porta_serial)
         time.sleep(10)
-        return render_template("separeted.html", user=current_user, weight = Views.peso)
+        return render_template("separeted.html", user=current_user, weight = peso)
 

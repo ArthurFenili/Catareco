@@ -4,15 +4,36 @@ from statistics import mean
 
 def ler_valor_arduino(porta_serial):
 
-    porta_serial.write(b"2")
-    time.sleep(2)
-    porta_serial.write(b'p')
-    time.sleep(2)
-    print("ALOP")
+    # 1-> chamar camera e ver o que é e quantas tem
+    # 2-> se latinha ou pet: chamar o servo motor pra girar pro lado certo
+    #     se não: nop
+    # 3-> se latinha ou pet: chamar motor de passo pra abrir 45°
+    #     se não: chamar motor de passo pra abrir 90°
+    # 4-> fazer a leitura da balança x ou y e retornar o peso
+    
+    try:
+        porta_serial.write(b"2")
+        porta_serial.flush()
+        print("Mensagem 1 enviada")
+        time.sleep(2)
+        porta_serial.write(b'l')
+        porta_serial.flush()
+        print("Mensagem 2 enviada")
+        time.sleep(2)
+        porta_serial.write(b'3')
+        porta_serial.flush()
+        print("Mensagem 3 enviada")
+        time.sleep(2)
+        porta_serial.write(b'r')
+        porta_serial.flush()
+        print("Mensagem 4 enviada")
+    except Exception as e:
+        print(f"Erro ao enviar mensagem para Arduino: {e}")
+
     valor_pesos = []
 
     try:
-        for i in range(20):
+        for i in range(40):
             print("Aguardando leitura...")
             
             # Read data from the serial port
@@ -22,8 +43,9 @@ def ler_valor_arduino(porta_serial):
             # Convert the data to integers and filter out non-numeric values
             try:
                 valor_float = float(valor_arduino)
-                valor_pesos.append(valor_float)
-                print(f"Valor do Arduino: {valor_arduino}")
+                if i > 25:
+                    valor_pesos.append(valor_float)
+                    print(f"Valor do Arduino: {valor_arduino}")
             except ValueError:
                 print(f"Ignore non-numeric value: {valor_arduino}")
 
