@@ -85,5 +85,3 @@ def valor_arduino(esp_instance):
             print(f"Valor do Arduino: {valor_str}")
         else:
             print("No data received from Arduino")
-
-        #colocar comentarios no codigo arduino do catareco pra ver pq o motor nao mexe
