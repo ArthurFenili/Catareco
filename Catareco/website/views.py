@@ -10,6 +10,7 @@ from balanca import ler_valor_arduino, valor_arduino
 import time
 import serial
 from .espe import Esp
+from cam_yolo import CamYolo
 
 class Views:
     views = Blueprint('views', __name__)
@@ -35,8 +36,6 @@ class Views:
     @login_required
     def separando():
         # Chama a função para ler os valores do Arduino
-        #porta_serial = serial.Serial('COM4', 9600, timeout=1)
-        #peso = ler_valor_arduino(porta_serial)
         return render_template("loading.html", user=current_user)
 
     @views.route('/separado', methods=['GET', 'POST'])
@@ -47,9 +46,12 @@ class Views:
     @views.route('/processando', methods=['GET', 'POST'])
     @login_required
     def processando():
+        url = 'http://192.168.1.2/cam-hi.jpg'
+        cam_yolo_instance = CamYolo(url)
+        cam_yolo_instance.process_image()
         # Chama a função para ler os valores do Arduino
-        with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
-            peso = ler_valor_arduino(porta_serial)
+        # with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
+        #     peso = ler_valor_arduino(porta_serial)
         time.sleep(10)
         return render_template("separeted.html", user=current_user, weight = peso)
 
