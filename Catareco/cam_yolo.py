@@ -41,7 +41,7 @@ class CamYolo:
         indices = cv2.dnn.NMSBoxes(bbox, confs, self.confThreshold, self.nmsThreshold)
 
         for i in indices:
-            i = i[0]
+            i = 0
             box = bbox[i]
             x, y, w, h = box[0], box[1], box[2], box[3]
             if self.classNames[classIds[i]] == 'bottle':
@@ -54,6 +54,8 @@ class CamYolo:
         print(f'Total Bottles: {found_bottle}')
         cv2.imwrite('detected_objects.jpg', im)
 
+        return found_bottle
+
     def process_image(self):
         img_resp = urllib.request.urlopen(self.url)
         imgnp = np.array(bytearray(img_resp.read()), dtype=np.uint8)
@@ -63,10 +65,14 @@ class CamYolo:
         layer_names = self.net.getLayerNames()
         output_names = [layer_names[i - 1] for i in self.net.getUnconnectedOutLayers()]
         outputs = self.net.forward(output_names)
-        self.find_objects(outputs, im)
-        cv2.imshow('Image', im)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        bottles = self.find_objects(outputs, im)
+        print("AFTER FIND")
+        # cv2.imshow('Image', im)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
+        return bottles
+
 
 # # Example of how to use the class
 # url = 'http://192.168.1.2/cam-hi.jpg'
