@@ -2,7 +2,7 @@ import serial
 import time
 from statistics import mean
 
-def ler_valor_arduino(porta_serial):
+def ler_valor_arduino(porta_serial, total_bottles, total_cans):
 
     # 1-> chamar camera e ver o que é e quantas tem
     # 2-> se latinha ou pet: chamar o servo motor pra girar pro lado certo
@@ -12,21 +12,41 @@ def ler_valor_arduino(porta_serial):
     # 4-> fazer a leitura da balança x ou y e retornar o peso
     
     try:
-        porta_serial.write(b"2")
-        porta_serial.flush()
-        print("Mensagem 1 enviada")
-        time.sleep(2)
-        porta_serial.write(b'l')
-        porta_serial.flush()
-        print("Mensagem 2 enviada")
-        time.sleep(2)
-        porta_serial.write(b'3')
-        porta_serial.flush()
-        print("Mensagem 3 enviada")
-        time.sleep(2)
-        porta_serial.write(b'r')
-        porta_serial.flush()
-        print("Mensagem 4 enviada")
+        if total_bottles > 0:
+            porta_serial.write(b"3")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"p")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"4")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"r")
+            porta_serial.flush()
+            time.sleep(2)
+        elif total_cans > 0:
+            porta_serial.write(b"3")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"l")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"4")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"r")
+            porta_serial.flush()
+            time.sleep(2)
+        else:
+            porta_serial.write(b"4")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"l")
+            porta_serial.flush()
+            time.sleep(2)
+
+
     except Exception as e:
         print(f"Erro ao enviar mensagem para Arduino: {e}")
 
@@ -37,7 +57,12 @@ def ler_valor_arduino(porta_serial):
             print("Aguardando leitura...")
             
             # Read data from the serial port
-            porta_serial.write(b"1")
+            if total_bottles > 0:
+                porta_serial.write(b"1")
+            elif total_cans > 0:
+                porta_serial.write(b"2")
+            else:
+                break
             valor_arduino = porta_serial.read(porta_serial.in_waiting).strip()
             
             # Convert the data to integers and filter out non-numeric values
@@ -54,7 +79,10 @@ def ler_valor_arduino(porta_serial):
         porta_serial.close()
 
     print(valor_pesos)
-    media_peso = mean(valor_pesos)
+    if len(valor_pesos) > 0:
+        media_peso = mean(valor_pesos)
+    else:
+        media_peso = 0
     print(media_peso)
     return media_peso
 

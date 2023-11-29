@@ -164,9 +164,9 @@ void rotatePassoLixo() {
   for(int i = 0; i<steps_per_rev; i++)
   {
     digitalWrite(STEP, HIGH);
-    delayMicroseconds(1000);
+    delayMicroseconds(500);
     digitalWrite(STEP, LOW);
-    delayMicroseconds(1000);
+    delayMicroseconds(500);
   }
   delay(1000);
 
@@ -176,9 +176,9 @@ void rotatePassoLixo() {
   for(int i = 0; i<steps_per_rev; i++)
   {
     digitalWrite(STEP, HIGH);
-    delayMicroseconds(2000);
+    delayMicroseconds(1000);
     digitalWrite(STEP, LOW);
-    delayMicroseconds(2000);
+    delayMicroseconds(1000);
   }
   delay(1000); 
 }
