@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import urllib.request
+import subprocess
 
 class CamYolo:
     def __init__(self, url, whT=320, confThreshold=0.5, nmsThreshold=0.3, classesfile='coco.names',
@@ -72,6 +73,19 @@ class CamYolo:
         # cv2.destroyAllWindows()
 
         return bottles
+
+    def call_detect():
+        command = "python trash_recognition/yolov5/detect.py --weights trash_recognition/yolov5/weights/best.pt --save-txt --source detected_objects.jpg"
+        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+        process.wait()
+        print(process.returncode)
+        # Open the file in read mode ('r')
+        with open('Catareco/Catareco/return.txt', 'r') as file:
+            # Read the entire content of the file
+            content = file.read()
+        content = content.split(',')
+        return content
+        
 
 
 # # Example of how to use the class

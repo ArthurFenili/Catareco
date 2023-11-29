@@ -48,9 +48,11 @@ class Views:
     def processando():
         url = 'http://192.168.1.2/cam-hi.jpg'
         cam_yolo_instance = CamYolo(url)
-        total_bottles = cam_yolo_instance.process_image()
-        total_cans = 0
+        total_objects = cam_yolo_instance.call_detect()
+        total_bottles = int(total_objects[0])
+        total_cans = int(total_objects[1])
         print("TOTAL DE GARRAFAS: ", total_bottles)
+        print("TOTAL DE LATINHAS: ", total_cans)
         # Chama a função para ler os valores do Arduino
         with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
             peso = ler_valor_arduino(porta_serial, total_bottles, total_cans)
