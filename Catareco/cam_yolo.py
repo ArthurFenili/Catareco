@@ -48,9 +48,9 @@ class CamYolo:
             if self.classNames[classIds[i]] == 'bottle':
                 found_bottle += 1
 
-            cv2.rectangle(im, (x, y), (x + w, y + h), (255, 0, 255), 2)
-            cv2.putText(im, f'{self.classNames[classIds[i]].upper()} {int(confs[i] * 100)}%', (x, y - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
+            # cv2.rectangle(im, (x, y), (x + w, y + h), (255, 0, 255), 2)
+            # cv2.putText(im, f'{self.classNames[classIds[i]].upper()} {int(confs[i] * 100)}%', (x, y - 10),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
 
         print(f'Total Bottles: {found_bottle}')
         cv2.imwrite('detected_objects.jpg', im)
@@ -74,13 +74,14 @@ class CamYolo:
 
         return bottles
 
-    def call_detect():
+    def call_detect(self):
+        self.process_image()
         command = "python trash_recognition/yolov5/detect.py --weights trash_recognition/yolov5/weights/best.pt --save-txt --source detected_objects.jpg"
         process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         process.wait()
         print(process.returncode)
         # Open the file in read mode ('r')
-        with open('Catareco/Catareco/return.txt', 'r') as file:
+        with open('return.txt', 'r') as file:
             # Read the entire content of the file
             content = file.read()
         content = content.split(',')

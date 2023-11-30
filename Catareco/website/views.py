@@ -46,7 +46,7 @@ class Views:
     @views.route('/processando', methods=['GET', 'POST'])
     @login_required
     def processando():
-        url = 'http://192.168.1.2/cam-hi.jpg'
+        url = 'http://192.168.1.10/cam-hi.jpg'
         cam_yolo_instance = CamYolo(url)
         total_objects = cam_yolo_instance.call_detect()
         total_bottles = int(total_objects[0])
@@ -54,8 +54,8 @@ class Views:
         print("TOTAL DE GARRAFAS: ", total_bottles)
         print("TOTAL DE LATINHAS: ", total_cans)
         # Chama a função para ler os valores do Arduino
-        with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
-            peso = ler_valor_arduino(porta_serial, total_bottles, total_cans)
+        # with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
+        #     peso = ler_valor_arduino(porta_serial, total_bottles, total_cans)
         peso = 0
         time.sleep(10)
         return render_template("separeted.html", user=current_user, weight = peso)
