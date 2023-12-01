@@ -144,14 +144,14 @@ void loop_passo(){
 
 
 void rotateServoLata() {
-  for (pos = 0; pos <= 70; pos += 1) {
+  for (pos = 0; pos <= 40; pos += 1) {
     servomotor.write(pos);
     delay(10);
   }
 }
 
 void rotateServoPet() {
-  for (pos = 70; pos >= 0; pos -= 1){
+  for (pos = 40; pos >= 0; pos -= 1){
     servomotor.write(pos);
     delay(10);
   }
