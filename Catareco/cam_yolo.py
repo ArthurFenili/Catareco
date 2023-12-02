@@ -75,7 +75,7 @@ class CamYolo:
         return bottles
 
     def call_detect(self):
-        self.process_image()
+        #self.process_image()
         command = "python trash_recognition/yolov5/detect.py --weights trash_recognition/yolov5/weights/best.pt --save-txt --source detected_objects.jpg"
         process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         process.wait()
