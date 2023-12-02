@@ -30,10 +30,10 @@ void setup() {
   loadCell1.setCalFactor(2000);
   loadCell2.begin();
   loadCell2.start(4000);
-  loadCell2.setCalFactor(2000);
+  loadCell2.setCalFactor(1.04);
 
   //servo
-  servomotor.attach(23);  // Pinagem do servo (pino GPIO)
+  servomotor.attach(21);  // Pinagem do servo (pino GPIO)
 
   //passo
   pinMode(STEP, OUTPUT);
@@ -144,14 +144,14 @@ void loop_passo(){
 
 
 void rotateServoLata() {
-  for (pos = 0; pos <= 40; pos += 1) {
+  for (pos = 0; pos <= 90; pos += 1) {
     servomotor.write(pos);
     delay(10);
   }
 }
 
 void rotateServoPet() {
-  for (pos = 40; pos >= 0; pos -= 1){
+  for (pos = 90; pos >= 0; pos -= 1){
     servomotor.write(pos);
     delay(10);
   }
@@ -173,7 +173,7 @@ void rotatePassoLixo() {
   digitalWrite(DIR, HIGH);
   Serial.println("Girando no sentido horário...");
   
-  for(int i = 0; i<steps_per_rev; i++)
+  for(int i = 0; i<steps_per_rev + 15; i++)
   {
     digitalWrite(STEP, HIGH);
     delayMicroseconds(1000);
@@ -187,19 +187,19 @@ void rotatePassoReciclavel() {
     digitalWrite(DIR, LOW);
   Serial.println("Girando no sentido anti-horário...");
 
-  for(int i = 0; i<steps_per_rev/2; i++)
+  for(int i = 0; i<steps_per_rev/2 - 130; i++)
   {
     digitalWrite(STEP, HIGH);
     delayMicroseconds(1000);
     digitalWrite(STEP, LOW);
     delayMicroseconds(1000);
   }
-  delay(1000);
+  delay(2000);
 
   digitalWrite(DIR, HIGH);
   Serial.println("Girando no sentido horário...");
   
-  for(int i = 0; i<steps_per_rev/2; i++)
+  for(int i = 0; i<steps_per_rev/2 - 120; i++)
   {
     digitalWrite(STEP, HIGH);
     delayMicroseconds(2000);

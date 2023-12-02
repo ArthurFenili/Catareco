@@ -2,7 +2,7 @@ import serial
 import time
 from statistics import mean
 
-def ler_valor_arduino(porta_serial, total_bottles, total_cans):
+def ler_valor_arduino(porta_serial, total_bottles, total_cans, total_not_accepted):
 
     # 1-> chamar camera e ver o que é e quantas tem
     # 2-> se latinha ou pet: chamar o servo motor pra girar pro lado certo
@@ -11,8 +11,23 @@ def ler_valor_arduino(porta_serial, total_bottles, total_cans):
     #     se não: chamar motor de passo pra abrir 90°
     # 4-> fazer a leitura da balança x ou y e retornar o peso
     
-    try:
-        if total_bottles > 0:
+    try:   
+        if total_not_accepted > 0:
+            time.sleep(2)
+        elif total_bottles > 0 and total_cans == 0:
+            porta_serial.write(b"3")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"l")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"4")
+            porta_serial.flush()
+            time.sleep(2)
+            porta_serial.write(b"r")
+            porta_serial.flush()
+            time.sleep(2)
+        elif total_cans > 0 and total_bottles == 0:
             porta_serial.write(b"3")
             porta_serial.flush()
             time.sleep(2)
@@ -23,26 +38,6 @@ def ler_valor_arduino(porta_serial, total_bottles, total_cans):
             porta_serial.flush()
             time.sleep(2)
             porta_serial.write(b"r")
-            porta_serial.flush()
-            time.sleep(2)
-        elif total_cans > 0:
-            porta_serial.write(b"3")
-            porta_serial.flush()
-            time.sleep(2)
-            porta_serial.write(b"l")
-            porta_serial.flush()
-            time.sleep(2)
-            porta_serial.write(b"4")
-            porta_serial.flush()
-            time.sleep(2)
-            porta_serial.write(b"r")
-            porta_serial.flush()
-            time.sleep(2)
-        else:
-            porta_serial.write(b"4")
-            porta_serial.flush()
-            time.sleep(2)
-            porta_serial.write(b"l")
             porta_serial.flush()
             time.sleep(2)
 
@@ -58,9 +53,9 @@ def ler_valor_arduino(porta_serial, total_bottles, total_cans):
             
             # Read data from the serial port
             if total_bottles > 0:
-                porta_serial.write(b"1")
-            elif total_cans > 0:
                 porta_serial.write(b"2")
+            elif total_cans > 0:
+                porta_serial.write(b"1")
             else:
                 break
             valor_arduino = porta_serial.read(porta_serial.in_waiting).strip()

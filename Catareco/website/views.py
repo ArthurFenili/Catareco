@@ -46,17 +46,29 @@ class Views:
     @views.route('/processando', methods=['GET', 'POST'])
     @login_required
     def processando():
-        url = 'http://192.168.1.10/cam-hi.jpg'
+        url = 'http://192.168.1.17/cam-hi.jpg'
         cam_yolo_instance = CamYolo(url)
         total_objects = cam_yolo_instance.call_detect()
-        total_bottles = int(total_objects[0])
+        total_bottles, total_not_accepted = cam_yolo_instance.process_image()
         total_cans = int(total_objects[1])
-        print("TOTAL DE GARRAFAS: ", total_bottles)
-        print("TOTAL DE LATINHAS: ", total_cans)
+        # print("TOTAL DE GARRAFAS: ", total_bottles)
+        # print("TOTAL DE LATINHAS: ", total_cans)
         # Chama a função para ler os valores do Arduino
-        # with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
-        #     peso = ler_valor_arduino(porta_serial, total_bottles, total_cans)
-        peso = 0
-        time.sleep(10)
-        return render_template("separeted.html", user=current_user, weight = peso)
+        total_not_accepted = 1
+        total_bottles = 0
+        total_cans = 0
+        with serial.Serial('COM4', 9600, timeout=1) as porta_serial:
+            peso = ler_valor_arduino(porta_serial, total_bottles, total_cans, total_not_accepted)
+        # peso = 0
+        creditos_ganhos = 0
+        if(total_cans > 0 and total_bottles == 0):
+            creditos_ganhos = 5 * (peso/1000)
+        elif(total_cans == 0 and total_bottles > 0):
+            creditos_ganhos = 1.20 * (peso/1000)
+        current_user.balance += creditos_ganhos
+        db.session.commit()
+        
+        print(creditos_ganhos)
+        print(current_user.balance)
+        return render_template("separeted.html", user=current_user, weight = peso, creditos_ganhos = creditos_ganhos)
 

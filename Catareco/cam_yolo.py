@@ -26,6 +26,7 @@ class CamYolo:
         classIds = []
         confs = []
         found_bottle = 0
+        found_not_accepted = 0
 
         for output in outputs:
             for det in output:
@@ -47,6 +48,8 @@ class CamYolo:
             x, y, w, h = box[0], box[1], box[2], box[3]
             if self.classNames[classIds[i]] == 'bottle':
                 found_bottle += 1
+            if self.classNames[classIds[i]] != 'bottle':
+                found_not_accepted += 1
 
             # cv2.rectangle(im, (x, y), (x + w, y + h), (255, 0, 255), 2)
             # cv2.putText(im, f'{self.classNames[classIds[i]].upper()} {int(confs[i] * 100)}%', (x, y - 10),
@@ -55,7 +58,7 @@ class CamYolo:
         print(f'Total Bottles: {found_bottle}')
         cv2.imwrite('detected_objects.jpg', im)
 
-        return found_bottle
+        return found_bottle, found_not_accepted
 
     def process_image(self):
         img_resp = urllib.request.urlopen(self.url)
@@ -66,13 +69,13 @@ class CamYolo:
         layer_names = self.net.getLayerNames()
         output_names = [layer_names[i - 1] for i in self.net.getUnconnectedOutLayers()]
         outputs = self.net.forward(output_names)
-        bottles = self.find_objects(outputs, im)
+        bottles, not_accepted = self.find_objects(outputs, im)
         print("AFTER FIND")
         # cv2.imshow('Image', im)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
-        return bottles
+        return bottles, not_accepted
 
     def call_detect(self):
         self.process_image()
